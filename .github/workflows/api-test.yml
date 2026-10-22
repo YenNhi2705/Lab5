@@ -1,15 +1,6 @@
 
 name: API Test - Newman
-  env:
-          REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
-        run: |
-          newman run ReqRes_Collection.json \
-            -e ReqRes_Environment.json \
-            --env-var "apiKey=$REQRES_API_KEY" \
-            -d users.csv \
-            --delay-request 500 \
-            --reporters cli,htmlextra \
-            --reporter-htmlextra-export report.html
+
 on:
   push:
     branches:
@@ -34,9 +25,12 @@ jobs:
           npm install -g newman newman-reporter-htmlextra
 
       - name: Run API Tests
+        env:
+          REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
         run: |
           newman run ReqRes_Collection.json \
             -e ReqRes_Environment.json \
+            --env-var "apiKey=$REQRES_API_KEY" \
             -d users.csv \
             --delay-request 500 \
             --reporters cli,htmlextra \
